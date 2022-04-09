@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/', function () {
-        $food_box = \DB::table('boxes')->where('box_name', 'food_box')->first();
-        $delivery_box = \DB::table('boxes')->where('box_name', 'delivery_box')->first();
+        $food_box = getBox('box_name', 'food_box')->first();
+        $delivery_box = getBox('box_name', 'delivery_box')->first();
 
         return view('dashboard', compact('food_box', 'delivery_box'));
     })->name('dashboard');
@@ -26,25 +26,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         $values['code'] = rand(1000, 9999);
         $values['mobile_number'] = '+966' . substr(request('mobile_number'), 1, 9);
         $values['isCodeUsed'] = false;
+        $values['updated_at'] = \Carbon\Carbon::now();
 
-        \DB::table('boxes')->where('box_name', 'food_box')->update($values);
+        getBox('box_name', 'food_box')->update($values);
         
-        $basic  = new \Vonage\Client\Credentials\Basic("43bd37db", "yhrY752gCCZmgbff");
-        $client = new \Vonage\Client($basic);
-
-        $response = $client->sms()->send(
-            new \Vonage\SMS\Message\SMS($values['mobile_number'], 
-                'EMail-Box', 
-                'Scan code in url ' . route('open_code', $values['code']))
-        );
-        
-        $message = $response->current();
-        
-        if ($message->getStatus() == 0) {
-            echo "The message was sent successfully\n";
-        } else {
-            echo "The message failed with status: " . $message->getStatus() . "\n";
-        }
+        $mobile_number = $values['mobile_number'];
+        $message = 'Scan code in url ' . route('open_code', $values['code']);
+        sendSMSMessage($mobile_number, $message);
 
         return redirect()->back();
     });   
@@ -52,39 +40,25 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         $values['code'] = rand(1000, 9999);
         $values['mobile_number'] = '+966' . substr(request('mobile_number'), 1, 9);
         $values['isCodeUsed'] = false;
+        $values['updated_at'] = \Carbon\Carbon::now();
 
-        \DB::table('boxes')->where('box_name', 'delivery_box')->update($values);
-        
-        $basic  = new \Vonage\Client\Credentials\Basic("43bd37db", "yhrY752gCCZmgbff");
-        $client = new \Vonage\Client($basic);
-
-        $response = $client->sms()->send(
-            new \Vonage\SMS\Message\SMS($values['mobile_number'], 
-                'EMail-Box', 
-                'Scan code in url ' . 'https://sfbox.xyz/box/codes/'.$values['code'])
-        );
-        
-        $message = $response->current();
-        
-        if ($message->getStatus() == 0) {
-            echo "The message was sent successfully\n";
-        } else {
-            echo "The message failed with status: " . $message->getStatus() . "\n";
-        }
+        getBox('box_name', 'delivery_box')->update($values);
+        $mobile_number = $values['mobile_number'];
+        $message = 'Scan code in url ' . route('open_code', $values['code']);
+        sendSMSMessage($mobile_number, $message);
 
         return redirect()->back();
     });
 
     // open code
     Route::get('/box/codes/{code}', function($code){
-        // get delivery box information
-        $box = DeliveryTrip::where('id', '1')->first();
+        $box = getBox('code', $code)->first();
+        abort_if(!hasValue($box), 403, 'Code is not valid');
 
-        $attributes['isBoxOpen'] = True;
-        
-        $box->update($attributes);
+        $isExpired = isCodeExpired($box);
+        abort_if($isExpired, 403, 'Code is expired');
 
-        return redirect()->back();
+        return view('open_code', compact('box'));
     })->name('open_code');
 
     // open box
