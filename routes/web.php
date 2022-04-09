@@ -77,24 +77,25 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     return view('open_code', compact('box'));
 })->name('open_code');
 
-// Raspberry Pi
-Route::get('/food_box/isBoxOpen', function(){
-    return getBox('box_name', 'food_box')->first()->isOpen;
-});
-Route::get('/delivery_box/isBoxOpen', function(){
-    return getBox('box_name', 'delivery_box')->first()->isOpen;
-});
-
 Route::get('/checkCode/{code}', function($code){
     $box = getBox('code', $code)->first();
     if(hasValue($box) && !isCodeExpired($box))
     {
+        $values['isCodeUsed'] = True;
+        getBox('box_name', $box->box_name)->update($values);
         return $box->box_name;
     }
     else
     {
         return '';
     }
+});
+
+Route::get('/food_box/isBoxOpen', function(){
+    return getBox('box_name', 'food_box')->first()->isOpen;
+});
+Route::get('/delivery_box/isBoxOpen', function(){
+    return getBox('box_name', 'delivery_box')->first()->isOpen;
 });
 
 // close box
