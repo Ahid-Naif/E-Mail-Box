@@ -36,12 +36,14 @@
                                         <button type="button" class="rounded-full bg-green-400 px-2 text-white">open</button>
                                     </td>
                                     <td class="px-6 py-4">
-                                    
+                                    <a href="{{ route('open_code', $food_box->code) }}" class="text-indigo-600">
+                                        {{ route('open_code', $food_box->code) }}
+                                    </a>
                                     </td>
                                     <td class="px-6 py-4">
                                         <form 
                                             method="POST"
-                                            action=""
+                                            action="/food_box/generate_code"
                                         >
                                             @csrf
                                             <input type="tel" pattern="[0]{1}[0-9]{9}" required name="mobile_number" placeholder="Enter number.. 05xxxxxxxx">
@@ -63,7 +65,7 @@
                                     <td class="px-6 py-4">
                                         <form 
                                             method="POST"
-                                            action=""
+                                            action="/delivery_box/generate_code"
                                         >
                                             @csrf
                                             <input type="tel" pattern="[0]{1}[0-9]{9}" required name="mobile_number" placeholder="Enter number.. 05xxxxxxxx">
