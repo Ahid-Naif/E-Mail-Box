@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return redirect()->back();
     });
 
-    // open code
+    // view code
     Route::get('/box/codes/{code}', function($code){
         $box = getBox('code', $code)->first();
         abort_if(!hasValue($box), 403, 'Code is not valid');
@@ -62,15 +62,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return view('open_code', compact('box'));
     })->name('open_code');
 
-    // close box
-    Route::get('/food_box/close', function(){
-        $values['isOpen'] = False;
+    // open box
+    Route::get('/food_box/open', function(){
+        $values['isOpen'] = True;
         getBox('box_name', 'food_box')->update($values);
 
         return redirect()->back();
     });
-    Route::get('/delivery_box/close', function(){
-        $values['isOpen'] = False;
+    Route::get('/delivery_box/open', function(){
+        $values['isOpen'] = True;
         getBox('box_name', 'delivery_box')->update($values);
 
         return redirect()->back();
@@ -85,22 +85,27 @@ Route::get('/delivery_box/isBoxOpen', function(){
     return getBox('box_name', 'delivery_box')->first()->isOpen;
 });
 
-Route::get('/food_box/checkCode', function(){
-    return getBox('box_name', 'food_box')->first()->code;
-});
-Route::get('/delivery_box/checkCode', function(){
-    return getBox('delivery_box', 'food_box')->first()->code;
+Route::get('/checkCode/{code}', function($code){
+    $box = getBox('code', $code)->first();
+    if(hasValue($box) && !isCodeExpired($box))
+    {
+        return $box->box_name;
+    }
+    else
+    {
+        return '';
+    }
 });
 
-// open box
-Route::get('/food_box/open', function(){
-    $values['isOpen'] = True;
+// close box
+Route::get('/food_box/close', function(){
+    $values['isOpen'] = False;
     getBox('box_name', 'food_box')->update($values);
 
     return redirect()->back();
 });
-Route::get('/delivery_box/open', function(){
-    $values['isOpen'] = True;
+Route::get('/delivery_box/close', function(){
+    $values['isOpen'] = False;
     getBox('box_name', 'delivery_box')->update($values);
 
     return redirect()->back();
