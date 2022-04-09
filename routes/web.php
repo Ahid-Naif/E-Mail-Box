@@ -82,6 +82,7 @@ Route::get('/checkCode/{code}', function($code){
     if(hasValue($box) && !isCodeExpired($box))
     {
         $values['isCodeUsed'] = True;
+        $values['isOpen'] = True;
         getBox('box_name', $box->box_name)->update($values);
         return $box->box_name;
     }
