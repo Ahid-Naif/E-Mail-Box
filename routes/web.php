@@ -51,17 +51,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return redirect()->back();
     });
 
-    // view code
-    Route::get('/box/codes/{code}', function($code){
-        $box = getBox('code', $code)->first();
-        abort_if(!hasValue($box), 403, 'Code is not valid');
-
-        $isExpired = isCodeExpired($box);
-        abort_if($isExpired, 403, 'Code is expired');
-
-        return view('open_code', compact('box'));
-    })->name('open_code');
-
     // open box
     Route::get('/food_box/open', function(){
         $values['isOpen'] = True;
@@ -76,6 +65,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return redirect()->back();
     });
 });
+
+ // view code
+ Route::get('/box/codes/{code}', function($code){
+    $box = getBox('code', $code)->first();
+    abort_if(!hasValue($box), 403, 'Code is not valid');
+
+    $isExpired = isCodeExpired($box);
+    abort_if($isExpired, 403, 'Code is expired');
+
+    return view('open_code', compact('box'));
+})->name('open_code');
 
 // Raspberry Pi
 Route::get('/food_box/isBoxOpen', function(){
