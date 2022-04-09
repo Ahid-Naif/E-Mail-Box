@@ -55,8 +55,8 @@
                                             <input type="tel" pattern="[0]{1}[0-9]{9}" required name="mobile_number" placeholder="Enter number.. 05xxxxxxxx">
                                             <button class="font-medium text-blue-600 hover:underline">Genrate code</button>
                                         </form>
-                                        <a class="font-medium text-green-600 mt-3 hover:underline">Open box</a>
-                                        <a class="font-medium text-red-600 mt-3 hover:underline">Close box</a>
+                                        <a href="/food_box/open" class="font-medium text-green-600 mt-3 hover:underline">Open box</a>
+                                        <a href="/food_box/close" class="font-medium text-red-600 mt-3 hover:underline">Close box</a>
                                     </td>
                                 </tr>
                                 <tr class="border-b odd:bg-white even:bg-gray-100">
@@ -64,7 +64,7 @@
                                     Delivery Box
                                     </th>
                                     <td class="px-6 py-4">
-                                        @if($food_box->isOpen)
+                                        @if($delivery_box->isOpen)
                                         <button type="button" class="rounded-full bg-green-400 px-2 text-white">open</button>
                                         @else
                                         <button type="button" class="rounded-full bg-red-400 px-2 text-white">closed</button>
@@ -87,8 +87,8 @@
                                             <input type="tel" pattern="[0]{1}[0-9]{9}" required name="mobile_number" placeholder="Enter number.. 05xxxxxxxx">
                                             <button class="font-medium text-blue-600 hover:underline">Genrate code</button>
                                         </form>
-                                        <a class="font-medium text-green-600 mt-3 hover:underline">Open box</a>
-                                        <a class="font-medium text-red-600 mt-3 hover:underline">Close box</a>
+                                        <a href="/delivery_box/open" class="font-medium text-green-600 mt-3 hover:underline">Open box</a>
+                                        <a href="/delivery_box/close" class="font-medium text-red-600 mt-3 hover:underline">Close box</a>
                                     </td>
                                 </tr>
                             </tbody>

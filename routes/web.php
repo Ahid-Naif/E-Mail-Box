@@ -63,22 +63,28 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // open box
     Route::get('/food_box/open', function(){
-        // get delivery box information
-        $box = DeliveryTrip::where('id', '1')->first();
-
-        $attributes['isBoxOpen'] = True;
-        
-        $box->update($attributes);
+        $values['isOpen'] = True;
+        getBox('box_name', 'food_box')->update($values);
 
         return redirect()->back();
     });
     Route::get('/delivery_box/open', function(){
-        // get delivery box information
-        $box = DeliveryTrip::where('id', '1')->first();
+        $values['isOpen'] = True;
+        getBox('box_name', 'delivery_box')->update($values);
 
-        $attributes['isBoxOpen'] = True;
-        
-        $box->update($attributes);
+        return redirect()->back();
+    });
+
+    // close box
+    Route::get('/food_box/close', function(){
+        $values['isOpen'] = False;
+        getBox('box_name', 'food_box')->update($values);
+
+        return redirect()->back();
+    });
+    Route::get('/delivery_box/close', function(){
+        $values['isOpen'] = False;
+        getBox('box_name', 'delivery_box')->update($values);
 
         return redirect()->back();
     });
