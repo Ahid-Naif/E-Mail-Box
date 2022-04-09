@@ -18,7 +18,8 @@ class Boxes extends Migration
             $table->string('box_name');
             $table->string('code');
             $table->string('mobile_number');
-            $table->boolean('isCodeUsed');
+            $table->boolean('isCodeUsed')->default(false);
+            $table->boolean('isOpen')->default(false);
             $table->timestamps();
         });
     }
