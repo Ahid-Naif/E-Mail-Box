@@ -14,14 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/monitoring', function()
-    {
-        return view('monitoring');
-    });
-
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('dashboard');
-    })->middleware(['auth'])->name('dashboard');
+    })->name('dashboard');
+
+    Route::post('/food_box/open', function () {
+        return redirect()->back();
+    });   
+
+    Route::post('/delivery_box/open', function () {
+        return redirect()->back();
+    });
 
     Route::post('/send_code', function()
     {
@@ -65,6 +68,49 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 });
 
-Route::get('/', function () {
-    return view('welcome');
+// Raspberry Pi
+Route::get('/food_box/isBoxOpen', function(){
+    // get delivery box information
+    $box = DeliveryTrip::where('id', '1')->first();
+
+    return $box['isBoxOpen'];
+});
+Route::get('/delivery_box/isBoxOpen', function(){
+    // get delivery box information
+    $box = DeliveryTrip::where('id', '1')->first();
+
+    return $box['isBoxOpen'];
+});
+
+Route::get('/food_box/checkCode', function(){
+    // get delivery box information
+    $box = DeliveryTrip::where('id', '1')->first();
+    
+    return $box['box_code'];
+});
+Route::get('/delivery_box/checkCode', function(){
+    // get delivery box information
+    $box = DeliveryTrip::where('id', '1')->first();
+    
+    return $box['box_code'];
+});
+
+// open box from raspberry pi
+Route::get('/food_box/remote_open_box', function(){
+    // get delivery box information
+    $box = DeliveryTrip::where('id', '1')->first();
+    $attributes['isBoxOpen'] = True;
+
+    $box->update($attributes);
+
+    return redirect()->back();
+});
+Route::get('/delivery_box/remote_open_box', function(){
+    // get delivery box information
+    $box = DeliveryTrip::where('id', '1')->first();
+    $attributes['isBoxOpen'] = True;
+
+    $box->update($attributes);
+
+    return redirect()->back();
 });
