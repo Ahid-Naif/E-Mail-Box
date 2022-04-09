@@ -33,12 +33,18 @@
                                     Food Box
                                     </th>
                                     <td class="px-6 py-4">
+                                        @if($food_box->isOpen)
                                         <button type="button" class="rounded-full bg-green-400 px-2 text-white">open</button>
+                                        @else
+                                        <button type="button" class="rounded-full bg-red-400 px-2 text-white">closed</button>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                    <a href="{{ route('open_code', $food_box->code) }}" class="text-indigo-600">
-                                        {{ route('open_code', $food_box->code) }}
-                                    </a>
+                                        @if(!isCodeExpired($food_box))
+                                        <a href="{{ route('open_code', $food_box->code) }}" class="text-indigo-600">
+                                            {{ route('open_code', $food_box->code) }}
+                                        </a>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4">
                                         <form 
@@ -58,10 +64,19 @@
                                     Delivery Box
                                     </th>
                                     <td class="px-6 py-4">
-                                        <button type="button" class="rounded-full bg-red-400 px-2 text-white">open</button>
+                                        @if($food_box->isOpen)
+                                        <button type="button" class="rounded-full bg-green-400 px-2 text-white">open</button>
+                                        @else
+                                        <button type="button" class="rounded-full bg-red-400 px-2 text-white">closed</button>
+                                        @endif                                    
                                     </td>
                                     <td class="px-6 py-4">
-                                    
+                                        @if(!isCodeExpired($delivery_box))
+                                        <a href="{{ route('open_code', $delivery_box->code) }}" class="text-indigo-600">
+                                            {{ route('open_code', $delivery_box->code) }}
+                                        </a>
+                                        @endif
+                                        
                                     </td>
                                     <td class="px-6 py-4">
                                         <form 
