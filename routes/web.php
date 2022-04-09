@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/', function () {
         $food_box = getBox('box_name', 'food_box')->first();
