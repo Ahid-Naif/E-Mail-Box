@@ -13,9 +13,10 @@ class Boxes extends Migration
      */
     public function up()
     {
-        Schema::table('boxes', function (Blueprint $table) {
+        Schema::create('boxes', function (Blueprint $table) {
             $table->id();
             $table->string('box_name');
+            $table->string('code');
             $table->string('mobile_number');
             $table->timestamps();
         });
@@ -28,8 +29,6 @@ class Boxes extends Migration
      */
     public function down()
     {
-        Schema::table('boxes', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('users');
     }
 }
