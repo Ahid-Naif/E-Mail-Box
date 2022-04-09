@@ -50,6 +50,7 @@
                                             <button class="font-medium text-blue-600 hover:underline">Genrate code</button>
                                         </form>
                                         <a class="font-medium text-green-600 mt-3 hover:underline">Open box</a>
+                                        <a class="font-medium text-red-600 mt-3 hover:underline">Close box</a>
                                     </td>
                                 </tr>
                                 <tr class="border-b odd:bg-white even:bg-gray-100">
@@ -72,6 +73,7 @@
                                             <button class="font-medium text-blue-600 hover:underline">Genrate code</button>
                                         </form>
                                         <a class="font-medium text-green-600 mt-3 hover:underline">Open box</a>
+                                        <a class="font-medium text-red-600 mt-3 hover:underline">Close box</a>
                                     </td>
                                 </tr>
                             </tbody>
