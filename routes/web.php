@@ -61,20 +61,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return view('open_code', compact('box'));
     })->name('open_code');
 
-    // open box
-    Route::get('/food_box/open', function(){
-        $values['isOpen'] = True;
-        getBox('box_name', 'food_box')->update($values);
-
-        return redirect()->back();
-    });
-    Route::get('/delivery_box/open', function(){
-        $values['isOpen'] = True;
-        getBox('box_name', 'delivery_box')->update($values);
-
-        return redirect()->back();
-    });
-
     // close box
     Route::get('/food_box/close', function(){
         $values['isOpen'] = False;
@@ -92,47 +78,29 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 // Raspberry Pi
 Route::get('/food_box/isBoxOpen', function(){
-    // get delivery box information
-    $box = DeliveryTrip::where('id', '1')->first();
-
-    return $box['isBoxOpen'];
+    return getBox('box_name', 'food_box')->first()->isOpen;
 });
 Route::get('/delivery_box/isBoxOpen', function(){
-    // get delivery box information
-    $box = DeliveryTrip::where('id', '1')->first();
-
-    return $box['isBoxOpen'];
+    return getBox('box_name', 'delivery_box')->first()->isOpen;
 });
 
 Route::get('/food_box/checkCode', function(){
-    // get delivery box information
-    $box = DeliveryTrip::where('id', '1')->first();
-    
-    return $box['box_code'];
+    return getBox('box_name', 'food_box')->first()->code;
 });
 Route::get('/delivery_box/checkCode', function(){
-    // get delivery box information
-    $box = DeliveryTrip::where('id', '1')->first();
-    
-    return $box['box_code'];
+    return getBox('delivery_box', 'food_box')->first()->code;
 });
 
-// open box from raspberry pi
-Route::get('/food_box/remote_open_box', function(){
-    // get delivery box information
-    $box = DeliveryTrip::where('id', '1')->first();
-    $attributes['isBoxOpen'] = True;
-
-    $box->update($attributes);
+// open box
+Route::get('/food_box/open', function(){
+    $values['isOpen'] = True;
+    getBox('box_name', 'food_box')->update($values);
 
     return redirect()->back();
 });
-Route::get('/delivery_box/remote_open_box', function(){
-    // get delivery box information
-    $box = DeliveryTrip::where('id', '1')->first();
-    $attributes['isBoxOpen'] = True;
-
-    $box->update($attributes);
+Route::get('/delivery_box/open', function(){
+    $values['isOpen'] = True;
+    getBox('box_name', 'delivery_box')->update($values);
 
     return redirect()->back();
 });
