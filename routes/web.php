@@ -18,17 +18,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::post('/food_box/open', function () {
-        return redirect()->back();
-    });   
-
-    Route::post('/delivery_box/open', function () {
-        return redirect()->back();
-    });
-
-    Route::post('/send_code', function()
-    {
+    // Genrate code
+    Route::post('/food_box/generate_code', function () {
         // get delivery box information
+        $box = \DB::table('boxes')->where('box_name', 'food_box')->first();
+        dd($box);
         $box = DeliveryTrip::where('id', '1')->first();
 
         $values['box_code'] = $order->code;
@@ -54,9 +48,23 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         }
 
         return redirect()->back();
+    });   
+    Route::post('/delivery_box/generate_code', function () {
+        return redirect()->back();
     });
 
-    Route::post('/open_box', function(Request $request, Order $order){
+    // open box
+    Route::get('/food_box/open', function(){
+        // get delivery box information
+        $box = DeliveryTrip::where('id', '1')->first();
+
+        $attributes['isBoxOpen'] = True;
+        
+        $box->update($attributes);
+
+        return redirect()->back();
+    });
+    Route::get('/delivery_box/open', function(){
         // get delivery box information
         $box = DeliveryTrip::where('id', '1')->first();
 
