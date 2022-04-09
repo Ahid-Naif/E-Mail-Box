@@ -29,6 +29,11 @@
                                         Mobile number: {{ $box->mobile_number }}
                                     </th>
                                 </tr>
+                                <tr class="border-b odd:bg-white even:bg-gray-100">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                        <a href="/{{ $box->box_name }}/close" class="font-medium text-red-600 mt-3 hover:underline">Close box</a>
+                                    </th>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
